@@ -51,7 +51,7 @@ class _SigninScreenState extends State<SigninScreen> {
     final ht = MediaQuery.of(context).size.height;
     final wd = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 18, 63, 141),
+      backgroundColor: const Color.fromARGB(255, 16, 73, 172),
       body: Column(
         children: [
           Padding(

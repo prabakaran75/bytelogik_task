@@ -53,7 +53,7 @@ class CounterScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 213, 224, 230),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 18, 63, 141),
+        backgroundColor: const Color.fromARGB(255, 16, 73, 172),
         actions: [
           IconButton(
             onPressed: () {
@@ -72,52 +72,66 @@ class CounterScreen extends ConsumerWidget {
         ),
         centerTitle: true,
       ),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: wd * 0.035),
-          child: SizedBox(
-            height: ht * 0.4,
-            child: Card(
-              elevation: 3.0,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: wd * 0.02,
-                  vertical: ht * 0.02,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Counter Value: ${refs.watch(initialCounterValue)}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
+      body: Stack(
+        children: [
+          Image.asset(
+            "assets/images/bg.jpg",
+            height: ht,
+            width: wd,
+            fit: BoxFit.cover,
+          ),
+          Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: wd * 0.035),
+              child: SizedBox(
+                height: ht * 0.4,
+                child: Card(
+                  elevation: 3.0,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: wd * 0.02,
+                      vertical: ht * 0.02,
                     ),
-                    SizedBox(height: ht * 0.04),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        customButton(ht, wd * 0.7, "Increment", () {
-                          refs.read(initialCounterValue.notifier).increment();
+                        Text(
+                          'Counter Value: ${refs.watch(initialCounterValue)}',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: ht * 0.04),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            customButton(ht, wd * 0.7, "Increment", () {
+                              refs
+                                  .read(initialCounterValue.notifier)
+                                  .increment();
+                            }),
+                            SizedBox(width: wd * 0.02),
+                            customButton(ht, wd * 0.7, "Decrement", () {
+                              refs
+                                  .read(initialCounterValue.notifier)
+                                  .decrement();
+                            }),
+                          ],
+                        ),
+                        SizedBox(height: ht * 0.02),
+                        customButton(ht, wd * 0.7, "Reset", () {
+                          refs.read(initialCounterValue.notifier).reset();
                         }),
-                        SizedBox(width: wd * 0.02),
-                        customButton(ht, wd * 0.7, "Decrement", () {
-                          refs.read(initialCounterValue.notifier).decrement();
-                        }),
+                        SizedBox(height: ht * 0.02),
                       ],
                     ),
-                    SizedBox(height: ht * 0.02),
-                    customButton(ht, wd * 0.7, "Reset", () {
-                      refs.read(initialCounterValue.notifier).reset();
-                    }),
-                    SizedBox(height: ht * 0.02),
-                  ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
