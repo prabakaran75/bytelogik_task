@@ -18,7 +18,6 @@ class _SigninScreenState extends State<SigninScreen> {
   final mailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  bool isLoggedIn = false;
   final AuthService authService = AuthService();
 
   @override
@@ -32,19 +31,29 @@ class _SigninScreenState extends State<SigninScreen> {
     var res = await authService.signIn(
       UserModel(email: mailCtrl.text, password: passCtrl.text),
     );
-    if (res == true) {
+
+    if (res == "success") {
       if (!mounted) return;
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => CounterScreen()),
-        (route) => false,
+            (route) => false,
       );
-    } else {
-      setState(() {
-        isLoggedIn = true;
-      });
+    }
+    else if (res == "no_user") {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.red,
+            content: Text("No account found with this email", style: TextStyle(color: Colors.white),)),
+      );
+    }
+    else if (res == "wrong_password") {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Incorrect password")),
+      );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -153,12 +162,6 @@ class _SigninScreenState extends State<SigninScreen> {
                           "Sign Up",
                         ),
                         SizedBox(height: ht * 0.02),
-                        isLoggedIn
-                            ? Text(
-                                "Username or Password is Incorrect!",
-                                style: TextStyle(color: Colors.redAccent),
-                              )
-                            : SizedBox(),
                       ],
                     ),
                   ),

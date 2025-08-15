@@ -49,7 +49,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
           decoration: InputDecoration(
             prefixIcon: Icon(widget.icon, color: Colors.white, size: 19),
             contentPadding: EdgeInsets.only(
-              top: widget.ht * 0.022,
+              top: widget.ht * 0.012,
               bottom: widget.ht * 0.01,
               right: widget.wd * 0.01,
               left: widget.wd * 0.03,

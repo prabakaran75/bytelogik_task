@@ -29,22 +29,29 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   void signup() async {
-    var res = await authService.signUp(
+    var result = await authService.signUp(
       UserModel(
         userName: nameCtrl.text,
         email: emailCtrl.text,
         password: passCtrl.text,
       ),
     );
-    if (res > 0) {
-      if (!mounted) return;
+
+    if (result == "exists") {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.red,
+            content: Text("User with this email already exists", style: TextStyle(color: Colors.white),)),
+      );
+    } else if (result == "success") {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => SigninScreen()),
-        (route) => false,
+            (route) => false,
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

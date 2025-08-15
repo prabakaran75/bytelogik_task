@@ -1,34 +1,58 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bytelogik_task/models/user_model.dart';
 import 'package:bytelogik_task/sqlite_db/db_helper.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 class AuthService {
   final DbHelper dh = DbHelper();
 
-  Future<bool> signIn(UserModel user) async {
+  Future<String> signIn(UserModel user) async {
     final Database db = await dh.initDb();
-    var result = await db.rawQuery(
-      "select * from users where email = ? AND password = ? ",
-      [user.email, user.password],
+
+    var existingUser = await db.query(
+      "users",
+      where: "email = ?",
+      whereArgs: [user.email],
     );
-    //'${user.password}'- '${user.email}'
-    if (result.isNotEmpty) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('isLoggedIn', true);
-      await prefs.setString('userEmail', user.email);
-      return true;
-    } else {
-      return false;
+
+    if (existingUser.isEmpty) {
+      return "no_user";
     }
+
+    var result = await db.query(
+      "users",
+      where: "email = ? AND password = ?",
+      whereArgs: [user.email, user.password],
+    );
+
+    if (result.isEmpty) {
+      return "wrong_password";
+    }
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userEmail', user.email);
+
+    return "success";
   }
 
-  Future<int> signUp(UserModel user) async {
+
+  Future<String> signUp(UserModel user) async {
     final Database db = await dh.initDb();
-    return db.insert("users", user.toMap());
+    final existingUser = await db.query(
+      "users",
+      where: "email = ?",
+      whereArgs: [user.email],
+    );
+    if (existingUser.isNotEmpty) {
+      // Return custom message
+      return "exists";
+    }
+
+    await db.insert("users", user.toMap());
+    return "success";
   }
 
-    Future<void> logout() async {
+  Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
   }

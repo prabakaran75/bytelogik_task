@@ -9,7 +9,7 @@ GestureDetector customButton(
   return GestureDetector(
     onTap: onPress,
     child: Container(
-      height: ht * 0.06,
+      height: ht * 0.05,
       width: wd * 0.6,
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 16, 73, 172),
