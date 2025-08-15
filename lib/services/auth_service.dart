@@ -8,30 +8,24 @@ class AuthService {
 
   Future<String> signIn(UserModel user) async {
     final Database db = await dh.initDb();
-
     var existingUser = await db.query(
       "users",
       where: "email = ?",
       whereArgs: [user.email],
     );
-
     if (existingUser.isEmpty) {
       return "no_user";
     }
-
     var result = await db.query(
       "users",
       where: "email = ? AND password = ?",
       whereArgs: [user.email, user.password],
     );
-
     if (result.isEmpty) {
       return "wrong_password";
     }
-
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('userEmail', user.email);
-
     return "success";
   }
 
@@ -44,10 +38,8 @@ class AuthService {
       whereArgs: [user.email],
     );
     if (existingUser.isNotEmpty) {
-      // Return custom message
       return "exists";
     }
-
     await db.insert("users", user.toMap());
     return "success";
   }

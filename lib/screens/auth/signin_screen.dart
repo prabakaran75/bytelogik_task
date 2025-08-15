@@ -59,117 +59,125 @@ class _SigninScreenState extends State<SigninScreen> {
   Widget build(BuildContext context) {
     final ht = MediaQuery.of(context).size.height;
     final wd = MediaQuery.of(context).size.width;
+    const tabletBreakpoint = 600.0;
+    final isWide = wd > tabletBreakpoint;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 16, 73, 172),
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-              left: wd * 0.02,
-              right: wd * 0.02,
-              top: ht * 0.07,
-            ),
-            child: Text(
-              "BYTELOGIK",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-                color: Colors.white,
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: isWide ? wd * 0.3 : 0.0),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                left: wd * 0.02,
+                right: wd * 0.02,
+                top: ht * 0.07,
               ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-              left: wd * 0.02,
-              right: wd * 0.02,
-              top: ht * 0.02,
-            ),
-            child: Text(
-              "Sign in.",
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 22,
-                color: Colors.white,
-              ),
-            ),
-          ),
-
-          Expanded(
-            child: Container(
-              height: ht * 0.8,
-              width: wd,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
+              child: Text(
+                "BYTELOGIK",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                  color: Colors.white,
                 ),
               ),
-              child: Form(
-                key: formKey,
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: ht * 0.06,
-                      left: wd * 0.02,
-                      right: wd * 0.02,
-                      bottom: ht * 0.02,
-                    ),
-                    child: Column(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: Image.asset(
-                            "assets/images/sign-in.png",
-                            fit: BoxFit.cover,
-                            width: wd * 0.7,
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                left: wd * 0.02,
+                right: wd * 0.02,
+                top: ht * 0.02,
+              ),
+              child: Text(
+                "Sign in.",
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 22,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+
+            Expanded(
+              child: Container(
+                height: ht * 0.8,
+                width: wd,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                ),
+                child: Form(
+                  key: formKey,
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: ht * 0.06,
+                        left: wd * 0.02,
+                        right: wd * 0.02,
+                        bottom: ht * 0.02,
+                      ),
+                      child: Column(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Image.asset(
+                              "assets/images/sign-in.png",
+                              fit: BoxFit.cover,
+                              width: wd * 0.7,
+                            ),
                           ),
-                        ),
-                        CustomTextfield(
-                          wd: wd,
-                          ht: ht,
-                          ctrl: mailCtrl,
-                          obscure: false,
-                          name: "Email",
-                          icon: Icons.email,
-                        ),
-                        CustomTextfield(
-                          wd: wd,
-                          ht: ht,
-                          ctrl: passCtrl,
-                          name: "Password",
-                          icon: Icons.password,
-                        ),
-                        SizedBox(height: ht * 0.04),
-                        customButton(ht * 1.15, wd * 1.5, "Sign In", () {
-                          if (formKey.currentState!.validate()) {
-                            login();
-                            print("Sign In");
-                          }
-                        }),
-                        SizedBox(height: ht * 0.03),
-                        suggestAuth(
-                          () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SignupScreen(),
-                              ),
-                              (route) => false,
-                            );
-                          },
-                          "Don't have a account? ",
-                          "Sign Up",
-                        ),
-                        SizedBox(height: ht * 0.02),
-                      ],
+                          CustomTextfield(
+                            wd: wd,
+                            ht: ht,
+                            ctrl: mailCtrl,
+                            obscure: false,
+                            name: "Email",
+                            icon: Icons.email,
+                          ),
+                          CustomTextfield(
+                            wd: wd,
+                            ht: ht,
+                            ctrl: passCtrl,
+                            name: "Password",
+                            icon: Icons.password,
+                          ),
+                          SizedBox(height: ht * 0.04),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal:  isWide ? wd * 0.03 : 0),
+                            child: customButton(ht * 1.15, wd * 1.5, "Sign In", () {
+                              if (formKey.currentState!.validate()) {
+                                login();
+                                print("Sign In");
+                              }
+                            }),
+                          ),
+                          SizedBox(height: ht * 0.03),
+                          suggestAuth(
+                            () {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SignupScreen(),
+                                ),
+                                (route) => false,
+                              );
+                            },
+                            "Don't have a account? ",
+                            "Sign Up",
+                          ),
+                          SizedBox(height: ht * 0.02),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

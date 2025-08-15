@@ -57,10 +57,4 @@ class DbHelper {
       },
     );
   }
-
-  // Future<UserModel?> getUser(String email) async {
-  //   final Database db = await initDb();
-  //   var res = await db.query("users", where: "email = ?", whereArgs: [email]);
-  //   return res.isNotEmpty ? UserModel.fromMap(res.first) : null;
-  // }
 }
